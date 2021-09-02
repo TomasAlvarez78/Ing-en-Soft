@@ -1,0 +1,84 @@
+@startuml Clinica Veterinaria
+package Veterinaria{
+    class Persona{
+        - nombre : string
+        - apellido : string
+        - dni : Int
+        - fechaNacimiento : Date
+        - telefono : Int
+        - email : string
+    }
+
+    class Cliente{
+        - datosPersonales: Persona
+        
+        + verificarCliente()
+        + crearCliente()
+        + consultarEstado()
+        + consultarCamara()
+        + consultarHistorial()
+    }
+
+    class Veterinario{
+        - datosPersonales: Persona
+        - profesion: String
+
+        + operar()
+    }
+ 
+    class Auxiliar{
+        - datosPersonales: Persona
+        - turno: string
+
+        + cobrarCliente()
+    }
+
+    class Mascota{
+        - nombre : string
+        - raza : string
+        - edad : string
+        - dueno: Cliente
+
+        + verificarMascota()
+        + crearMascota()
+        + modificarDueno()
+    }
+
+    class Consulta{
+        - animal : Mascota
+        - profesional : Veterinario
+        - fecha : Datetime
+        - tiempoTranscurrido : Int
+        - importe : Double
+        - resolucion : string
+        - pago : Pago
+        - recetas : List<Receta>
+    }
+
+    class Pago{
+        - metodo: string
+        + registrarPago()
+        + aplicarRecargo()
+    }
+
+    ' Herencia
+    Cliente -|> Persona
+    Veterinario -|> Persona
+    Auxiliar -|> Persona
+
+    ' Relaciones
+    Cliente "1" --> "0-n" Mascota
+    Consulta "0-n" -left-> "1" Mascota
+    Consulta "0-n" -up-> "1" Veterinario
+    Consulta -right-> Pago
+    Cliente -> Pago
+}
+
+package REIAC {
+    class REIAC{
+        + verificarMascota()
+    }
+}
+
+Mascota --> REIAC
+@enduml
