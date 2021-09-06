@@ -10,7 +10,7 @@ package Veterinaria{
     }
 
     class Cliente{
-        - datosPersonales: Persona
+        - datosPersonales : Persona
         
         + verificarCliente()
         + crearCliente()
@@ -20,15 +20,15 @@ package Veterinaria{
     }
 
     class Veterinario{
-        - datosPersonales: Persona
-        - profesion: String
+        - datosPersonales : Persona
+        - profesion : String
 
         + operar()
     }
  
     class Auxiliar{
-        - datosPersonales: Persona
-        - turno: string
+        - datosPersonales : Persona
+        - turno : string
 
         + cobrarCliente()
     }
@@ -37,7 +37,8 @@ package Veterinaria{
         - nombre : string
         - raza : string
         - edad : string
-        - dueno: Cliente
+        - sexo : string
+        - dueno : Cliente
 
         + verificarMascota()
         + crearMascota()
@@ -52,26 +53,49 @@ package Veterinaria{
         - importe : Double
         - resolucion : string
         - pago : Pago
-        - recetas : List<Receta>
+        - recetas : List <Receta>
+    }
+
+    class Receta{
+        - nombre : string
+        - definicion : string
     }
 
     class Pago{
-        - metodo: string
+        - metodo : string
+
         + registrarPago()
         + aplicarRecargo()
     }
 
+    class SistemaCamaras{
+        - cantidad : int
+        - listaMascotas : List<Mascota>
+
+        + verVideo()
+    }
+
+    class Camara{
+        - numero: int
+
+        + verVideoCamara()
+    }
+
+
     ' Herencia
-    Cliente -|> Persona
-    Veterinario -|> Persona
-    Auxiliar -|> Persona
+    Cliente -up-|> Persona
+    Veterinario -up-|> Persona
+    Auxiliar -up-|> Persona
 
     ' Relaciones
     Cliente "1" --> "0-n" Mascota
     Consulta "0-n" -left-> "1" Mascota
     Consulta "0-n" -up-> "1" Veterinario
+    Consulta -left-> "0-n" Receta
     Consulta -right-> Pago
     Cliente -> Pago
+    SistemaCamaras -down-> Camara
+    Cliente -> SistemaCamaras
 }
 
 package REIAC {
@@ -80,5 +104,17 @@ package REIAC {
     }
 }
 
+package GestorContenidos <<Database>> { 
+    class GestorContenidos{
+        + guardarDiario()
+        + generarInforme()
+        + historialMascota()
+    }
+}
+
 Mascota --> REIAC
+GestorContenidos -up-> Consulta
+' GestorContenidos -up-> Cliente
+' GestorContenidos -up-> Mascota
+
 @enduml
