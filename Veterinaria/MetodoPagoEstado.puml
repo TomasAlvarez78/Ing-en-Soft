@@ -1,0 +1,21 @@
+@startuml MetodoPago
+(*) --> [Se genera el pago\n (Se aplica recargo\n si es necesario)\n /generarPago()]Generado
+if "Tarjeta" then
+    -->[Si (la tarjeta\n tiene saldo)\n /pagar()] Pagado
+else
+    --> [No] Pago Pendiente
+    --> Pagado
+if "Aceptado" then
+    --> Enviado
+    --> Finalizado
+    --> (*)
+else
+    --> Rechazado
+    if "Reintentar" then
+        --> [Si]Generado
+    else
+        --> [No]Cancelado
+        --> (*)
+    
+    
+@enduml
