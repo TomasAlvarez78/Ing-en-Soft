@@ -1,0 +1,36 @@
+@startuml ModificarDueno
+    actor AuxiliarVeterinaria
+    boundary InterfazVeterinaria
+
+    control GestorDueno
+    entity Dueno
+
+    control GestorMascota
+    entity Mascota
+
+    AuxiliarVeterinaria -> InterfazVeterinaria: 1. tomarOpcionModificarDueno()
+    activate InterfazVeterinaria
+    InterfazVeterinaria -> InterfazVeterinaria: 2. habilitarPantalla()
+    AuxiliarVeterinaria -> InterfazVeterinaria: 3. modificarDueno(Dueno,Mascota)
+    InterfazVeterinaria -> GestorDueno: 4. modificarDueno(Dueno,Mascota)
+
+    activate GestorDueno
+    GestorDueno -> GestorDueno: 5. validarDueno()
+
+    loop
+        GestorDueno -> Dueno: 6. existeDueno(Dueno)
+        Dueno --> GestorDueno: 7. True
+    end
+
+    GestorDueno -> GestorMascota: 8. modificarDueno(Dueno,Mascota)
+    deactivate GestorDueno
+
+    GestorMascota -> Mascota: 9. modificarDueno(Dueno,Mascota)
+    activate GestorMascota
+    Mascota --> GestorMascota: 10. True
+    GestorMascota -> InterfazVeterinaria: 11. mostrarMensajeConfirmacion()
+    deactivate GestorMascota
+
+
+
+@enduml

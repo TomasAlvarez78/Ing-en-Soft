@@ -1,0 +1,47 @@
+@startuml RegistrarMascota
+    actor AuxiliarVeterinaria
+
+    boundary InterfazVeterinaria
+
+    control GestorDueno
+    entity Dueno
+
+    control GestorMascota
+    entity Mascota
+    entity newMascota
+
+    control REIAC
+
+    activate InterfazVeterinaria
+    AuxiliarVeterinaria -> InterfazVeterinaria: 1. tomarOpcionRegistrarMascota()
+    InterfazVeterinaria -> InterfazVeterinaria: 2. habilitarPantalla()
+    AuxiliarVeterinaria -> InterfazVeterinaria: 3. registrarMascota(Dueno,Mascota)
+    InterfazVeterinaria -> GestorDueno: 4. registrarMascota(Dueno,Mascota)
+    activate GestorDueno
+    GestorDueno -> GestorDueno: 5. validarDueno()
+
+    loop
+        GestorDueno -> Dueno: 6. existeDueno(Dueno)
+        Dueno --> GestorDueno: 7. True
+    end
+
+    GestorDueno -> GestorMascota: 8. registrarMascota(Dueno,Mascota)
+    deactivate GestorDueno
+    activate GestorMascota
+    
+    loop
+        GestorMascota -> Mascota: 9. existeMascota(Mascota)
+        Mascota --> GestorMascota: 10. False
+    end
+
+    GestorMascota -> newMascota: 11. new Mascota(Dueno,Mascota)
+
+    loop
+        GestorMascota -> REIAC: 12. validarREIAC(Mascota)
+        REIAC --> GestorMascota: 13. True or False
+    end
+
+    GestorMascota -> InterfazVeterinaria: 14. mostrarMensajeConfirmacion()
+    deactivate GestorMascota
+
+@enduml
